@@ -1,0 +1,61 @@
+{
+  "Object": [
+    {
+      "Type": "Terrain",
+      "PrefabName": "New Terrain 1",
+      "Position": {
+        "x": -50.0,
+        "y": -10.0,
+        "z": -50.0
+      },
+      "Rotation": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      },
+      "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+      }
+    },
+    {
+      "Type": "Object",
+      "PrefabName": "Floor_1",
+      "Position": {
+        "x": 2.0,
+        "y": 2.0,
+        "z": 2.0
+      },
+      "Rotation": {
+        "x": 2.0,
+        "y": 2.0,
+        "z": 2.0
+      },
+      "Scale": {
+        "x": 2.0,
+        "y": 2.0,
+        "z": 2.0
+      }
+    },
+    {
+      "Type": "Object",
+      "PrefabName": "Floor_2",
+      "Position": {
+        "x": 3.0,
+        "y": 3.0,
+        "z": 3.0
+      },
+      "Rotation": {
+        "x": 3.0,
+        "y": 3.0,
+        "z": 3.0
+      },
+      "Scale": {
+        "x": 3.0,
+        "y": 3.0,
+        "z": 3.0
+      }
+    }
+  ]
+}
