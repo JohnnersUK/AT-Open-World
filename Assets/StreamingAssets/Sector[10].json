@@ -2,7 +2,7 @@
   "Object": [
     {
       "Type": "Terrain",
-      "PrefabName": "New Terrain 1",
+      "PrefabName": "t_Sector[10]",
       "Position": {
         "x": -50.0,
         "y": -10.0,

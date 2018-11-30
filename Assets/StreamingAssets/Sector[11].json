@@ -1,7 +1,7 @@
 {
   "Object": [
     {
-      "Type":  "Object",
+      "Type": "Object",
       "PrefabName": "Wall_2A",
       "Position": {
         "x": 1.0,
@@ -21,7 +21,7 @@
     },
     {
       "Type": "Terrain",
-      "PrefabName": "Sector[0] Terrain",
+      "PrefabName": "t_Sector[11]",
       "Position": {
         "x": -50.0,
         "y": -10.0,

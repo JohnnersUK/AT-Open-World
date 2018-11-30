@@ -1,12 +1,12 @@
 {
   "Object": [
     {
-      "Type": "Terrain",
-      "PrefabName": "New Terrain 3",
+      "Type":  "Object",
+      "PrefabName": "Wall_2A",
       "Position": {
-        "x": -50.0,
-        "y": -10.0,
-        "z": -50.0
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
       },
       "Rotation": {
         "x": 1.0,
@@ -20,12 +20,12 @@
       }
     },
     {
-      "Type": "Object",
-      "PrefabName": "Floor_1",
+      "Type": "Terrain",
+      "PrefabName": "t_Sector[00]",
       "Position": {
-        "x": 2.0,
-        "y": 2.0,
-        "z": 2.0
+        "x": -50.0,
+        "y": -10.0,
+        "z": -50.0
       },
       "Rotation": {
         "x": 2.0,
