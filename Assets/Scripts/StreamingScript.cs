@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 using UnityEngine;
@@ -14,13 +16,19 @@ public class StreamingScript : MonoBehaviour
     private bool Loaded;
     private Vector3 LastPos;
 
+    // Observer pattern
+    public delegate void LevelLoadedEventHandler(object source, EventArgs args);
+    public event LevelLoadedEventHandler LevelLoaded;
+
+    public delegate void LevelUnloadedEventHandler(object source, EventArgs args);
+    public event LevelUnloadedEventHandler LevelUnloaded;
+
     // Use this for initialization
     void Start()
     {
         Loaded = false;
         JsonDataPath = this.name + ".json";
-        StartCoroutine(Example());
-        SaveGameData();
+        LoadGameData();
         LastPos = Player.position;
     }
 
@@ -51,16 +59,6 @@ public class StreamingScript : MonoBehaviour
         LastPos = Player.position;
     }
 
-    IEnumerator<WaitForSeconds> Example()
-    {
-        yield return new WaitForSeconds(5);
-        LoadGameData();
-    }
-
-    void SaveGameData()
-    {
-        
-    }
 
     // Loads data from a JSON file
     void LoadGameData()
@@ -72,8 +70,6 @@ public class StreamingScript : MonoBehaviour
         GameObject tempT = Terrain.CreateTerrainGameObject(tdata);
         tempT.transform.parent = transform;
         tempT.transform.localPosition = new Vector3(-50, -10, -50);
-
-        
 
         // If an object file exists, Load it
         if (File.Exists(path))
@@ -98,14 +94,40 @@ public class StreamingScript : MonoBehaviour
         }
 
         Loaded = true;
+        OnLevelLoaded();
+    }
+
+    protected virtual void OnLevelLoaded()
+    {
+        if (LevelLoaded != null)
+        {
+            LevelLoaded(this, EventArgs.Empty);
+        }
     }
 
     void UnloadGameData()
-    {
+    { 
+
         foreach (Transform child in transform)
         {
-            GameObject.Destroy(child.gameObject);
+            Destroy(child.gameObject);
         }
+
         Loaded = false;
+        OnLevelUnloaded();
+    }
+
+    protected virtual void OnLevelUnloaded()
+    {
+        if (LevelUnloaded != null)
+        {
+            LevelUnloaded(this, EventArgs.Empty);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.name);
+        other.transform.parent = this.transform;
     }
 }

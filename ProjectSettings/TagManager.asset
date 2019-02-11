@@ -7,6 +7,7 @@ TagManager:
   - Floor
   - Wall
   - Door
+  - AI
   layers:
   - Default
   - TransparentFX
