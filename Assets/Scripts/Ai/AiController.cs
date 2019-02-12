@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
+﻿
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -39,17 +37,21 @@ public class AiController : MonoBehaviour
 
         target = transform.position;
 
-        if(hasPattern == false)
+        if (hasPattern == false)
         {
-            switch (Random.Range(0, 1))
+            switch (Random.Range(0, 2))
             {
                 default:
                 case 0:
+                    pattern = new RunnerPattern(gameObject, player, target, agent);
+                    GetComponent<MeshRenderer>().material.color = new Color(0, 1, 0);
+                    break;
+                case 1:
                     pattern = new AggroPattern(gameObject, player, target, agent);
+                    GetComponent<MeshRenderer>().material.color = new Color(1, 0, 0);
                     break;
             }
         }
-
     }
 
     // Update is called once per frame

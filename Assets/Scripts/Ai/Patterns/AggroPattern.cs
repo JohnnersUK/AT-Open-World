@@ -5,9 +5,7 @@ using UnityEngine.AI;
 
 public class AggroPattern : AIPattern
 {
-    private AiController ctrl;
-
-    public AggroPattern(GameObject m, Transform p, Vector3 t, NavMeshAgent n)
+    public AggroPattern(GameObject m, Transform p, Vector3 t, NavMeshAgent n) : base(m, p, t, n)
     {
         me = m;
         ctrl = me.GetComponent<AiController>();
@@ -55,16 +53,4 @@ public class AggroPattern : AIPattern
 
     }
 
-    private Vector3 RandomNavmeshLocation()
-    {
-        Vector3 randomDirection = Random.insideUnitSphere * ctrl.WalkRadius;
-        randomDirection += me.transform.position;
-        NavMeshHit hit;
-        Vector3 finalPosition = Vector3.zero;
-        if (NavMesh.SamplePosition(randomDirection, out hit, ctrl.WalkRadius, 1))
-        {
-            finalPosition = hit.position;
-        }
-        return finalPosition;
-    }
 }
