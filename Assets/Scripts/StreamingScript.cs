@@ -81,9 +81,6 @@ public class StreamingScript : MonoBehaviour
                 if (o.Type == "Object")
                 {
                     GameObject temp = (GameObject)Instantiate(Resources.Load(o.PrefabName), o.Position, Quaternion.Euler(o.Rotation), transform);
-                    temp.transform.parent = transform;
-                    temp.transform.localPosition = o.Position;
-                    temp.transform.localRotation = Quaternion.Euler(o.Rotation);
                     temp.transform.localScale = o.Scale;
                 }
             }

@@ -43,8 +43,6 @@ public class AIManager : MonoBehaviour
                     int posX = Mathf.Clamp(Mathf.FloorToInt(a.transform.position.x / 100), 0, 2);
 
                     string name = "Sector[" + posX + posZ + "]";
-                    a.GetComponentInChildren<Text>().text = name;
-                    Debug.Log(name);
 
                     a.transform.parent = GameObject.Find(name).transform;
                 }
@@ -60,16 +58,33 @@ public class AIManager : MonoBehaviour
     private void OnLevelLoaded(object source, EventArgs args)
     {
         StreamingScript str = source as StreamingScript;
+
+        // Generate a random number of agents
         int x = UnityEngine.Random.Range(0, 10);
         for (int i = 0; i < x; i++)
         {
-            GameObject tempA = (GameObject)Instantiate(AIPrefab, str.transform);
+            // Instanciate the bot
+            
 
+            // Randomize a location
             float newX = UnityEngine.Random.Range(-50, 50) + str.transform.position.x;
             float newZ = UnityEngine.Random.Range(-50, 50) + str.transform.position.z;
+            Vector3 targetPos = new Vector3(newX, 0, newZ);
 
-            tempA.GetComponent<NavMeshAgent>().Warp(new Vector3(newX, 0, newZ));
+            // Raycast up/down to find the ground level, move agent to this point
+            RaycastHit hit;
+            if (Physics.Raycast(targetPos, transform.TransformDirection(Vector3.up), out hit, Mathf.Infinity))
+            {
+                targetPos = hit.point;
 
+            }
+            else if (Physics.Raycast(targetPos, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity))
+            {
+
+                targetPos = hit.point;
+            }
+
+            GameObject tempA = Instantiate(AIPrefab, targetPos, new Quaternion(0,0,0,0), str.transform);
             agents.Add(tempA);
         }
     }
