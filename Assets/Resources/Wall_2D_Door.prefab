@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6407060}
   - component: {fileID: 222472055343529670}
   - component: {fileID: 114447137128568634}
+  - component: {fileID: 114757160292401922}
   m_Layer: 0
   m_Name: Wall_2D_Door
   m_TagString: Untagged
@@ -120,6 +121,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Wall_2D_Door
+--- !u!114 &114757160292401922
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 116494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ee10e09038a0ba43a919572c0779d4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalName: Wall_2D_Door
 --- !u!222 &222472055343529670
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -138,7 +151,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

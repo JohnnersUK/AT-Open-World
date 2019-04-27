@@ -53,4 +53,9 @@ public class AggroPattern : AIPattern
 
     }
 
+    public override void Caught()
+    {
+        GameManager.Instance.PlayerHealth -= 1;
+    }
+
 }

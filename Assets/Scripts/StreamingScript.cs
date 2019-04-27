@@ -28,8 +28,10 @@ public class StreamingScript : MonoBehaviour
     {
         Loaded = false;
         JsonDataPath = this.name + ".json";
-        LoadGameData();
-        LastPos = Player.position;
+        LastPos = new Vector3(-1,-1,-1);
+
+        // Clear any unsaved data
+        UnloadGameData();
     }
 
     // Update is called once per frame
@@ -59,15 +61,18 @@ public class StreamingScript : MonoBehaviour
         LastPos = Player.position;
     }
 
-
     // Loads data from a JSON file
     void LoadGameData()
     {
+        UnityEngine.Object tempResource;
+        GameObject tempObject;
+
         string path = Path.Combine(Application.streamingAssetsPath, JsonDataPath);
 
         // Load the terrain
         TerrainData tdata = (TerrainData)Resources.Load("t_" + this.name);
         GameObject tempT = Terrain.CreateTerrainGameObject(tdata);
+
         tempT.transform.parent = transform;
         tempT.transform.localPosition = new Vector3(-125, -10, -125);
 
@@ -76,12 +81,20 @@ public class StreamingScript : MonoBehaviour
         {
             string data = File.ReadAllText(path);
             ObjectsList = JsonUtility.FromJson<ObjectList>(data);
-            foreach(Object o in ObjectsList.Object)
+            foreach(Object o in ObjectsList.List)
             { 
                 if (o.Type == "Object")
                 {
-                    GameObject temp = (GameObject)Instantiate(Resources.Load(o.PrefabName), o.Position, Quaternion.Euler(o.Rotation), transform);
-                    temp.transform.localScale = o.Scale;
+                    tempResource = Resources.Load(o.PrefabName);
+                    if(tempResource == null)
+                    {
+                        Debug.LogError("Resource not found: " + o.PrefabName);
+                    }
+                    else
+                    {
+                        tempObject = (GameObject)Instantiate(tempResource, o.Position, Quaternion.Euler(o.Rotation), transform);
+                        tempObject.transform.localScale = o.Scale;
+                    }
                 }
             }
         }
@@ -94,14 +107,6 @@ public class StreamingScript : MonoBehaviour
         OnSectorLoaded();
     }
 
-    protected virtual void OnSectorLoaded()
-    {
-        if (SectorLoaded != null)
-        {
-            SectorLoaded(this, EventArgs.Empty);
-        }
-    }
-
     void UnloadGameData()
     {
         OnSectorUnloaded();
@@ -112,6 +117,14 @@ public class StreamingScript : MonoBehaviour
         }
 
         Loaded = false;
+    }
+
+    protected virtual void OnSectorLoaded()
+    {
+        if (SectorLoaded != null)
+        {
+            SectorLoaded(this, EventArgs.Empty);
+        }
     }
 
     protected virtual void OnSectorUnloaded()

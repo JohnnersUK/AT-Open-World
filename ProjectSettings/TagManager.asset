@@ -8,6 +8,9 @@ TagManager:
   - Wall
   - Door
   - AI
+  - Runner
+  - Attacker
+  - House_1
   layers:
   - Default
   - TransparentFX

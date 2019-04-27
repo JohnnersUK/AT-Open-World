@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6519678}
   - component: {fileID: 222180747362758142}
   - component: {fileID: 114848470560137888}
+  - component: {fileID: 114049250024394900}
   m_Layer: 0
   m_Name: Wall_1E
   m_TagString: Untagged
@@ -85,6 +86,18 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 188988}
   m_IsPrefabAsset: 1
+--- !u!114 &114049250024394900
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 188988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ee10e09038a0ba43a919572c0779d4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalName: Wall_1E
 --- !u!114 &114848470560137888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -136,7 +149,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

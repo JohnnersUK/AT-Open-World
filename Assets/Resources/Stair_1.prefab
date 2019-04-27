@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6494952}
   - component: {fileID: 222869865183762556}
   - component: {fileID: 114641253679000488}
+  - component: {fileID: 114463671220850046}
   m_Layer: 0
   m_Name: Stair_1
   m_TagString: Untagged
@@ -87,6 +88,18 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 116712}
   m_IsPrefabAsset: 1
+--- !u!114 &114463671220850046
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 116712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ee10e09038a0ba43a919572c0779d4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalName: Stair_1
 --- !u!114 &114641253679000488
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -138,7 +151,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 21
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

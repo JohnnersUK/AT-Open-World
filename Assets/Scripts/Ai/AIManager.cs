@@ -9,6 +9,8 @@ public class AIManager : MonoBehaviour
 {
     public GameObject AIPrefab;
 
+    public static AIManager Instance;
+
     private StreamingScript[] ss;
     private List<GameObject> agents;
 
@@ -17,6 +19,17 @@ public class AIManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        // Destroy all other managers and set the instance
+        AIManager[] tempManagers = FindObjectsOfType<AIManager>();
+        foreach(AIManager manager in tempManagers)
+        {
+            if(manager != this)
+            {
+                Destroy(manager);
+            }
+        }
+        Instance = this;
+
         agents = new List<GameObject>();
         ss = FindObjectsOfType<StreamingScript>();
 
@@ -44,9 +57,9 @@ public class AIManager : MonoBehaviour
 
                     string name = "Sector[" + posX + posZ + "]";
 
-                    foreach(StreamingScript s in ss)
+                    foreach (StreamingScript s in ss)
                     {
-                        if(s.name == name)
+                        if (s.name == name)
                         {
                             a.transform.parent = s.transform;
                             break;
@@ -70,9 +83,6 @@ public class AIManager : MonoBehaviour
         int x = UnityEngine.Random.Range(0, 50);
         for (int i = 0; i < x; i++)
         {
-            // Instanciate the bot
-            
-
             // Randomize a location
             float newX = UnityEngine.Random.Range(-125, 125) + str.transform.position.x;
             float newZ = UnityEngine.Random.Range(-125, 125) + str.transform.position.z;
@@ -91,7 +101,8 @@ public class AIManager : MonoBehaviour
                 targetPos = hit.point;
             }
 
-            GameObject tempA = Instantiate(AIPrefab, targetPos, new Quaternion(0,0,0,0), str.transform);
+            // Instantiate the bot and add it to the list of agents
+            GameObject tempA = Instantiate(AIPrefab, targetPos, new Quaternion(0, 0, 0, 0), str.transform);
             agents.Add(tempA);
         }
     }
@@ -104,7 +115,7 @@ public class AIManager : MonoBehaviour
 
         int numOfChildren = tempSector.transform.childCount - 1;
 
-        for(int i = numOfChildren; i > -1; i--)
+        for (int i = numOfChildren; i > -1; i--)
         {
             tempChild = tempSector.transform.GetChild(i).gameObject;
 
@@ -113,6 +124,14 @@ public class AIManager : MonoBehaviour
                 agents.Remove(tempChild);
                 Destroy(tempChild);
             }
+        }
+    }
+
+    public void RemoveAgent(GameObject a)
+    {
+        if (agents.Contains(a))
+        {
+            agents.Remove(a);
         }
     }
 }

@@ -3,5 +3,5 @@
 [System.Serializable]
 public class ObjectList
 {
-    public List<Object> Object = new List<Object>();
+    public List<Object> List = new List<Object>();
 }

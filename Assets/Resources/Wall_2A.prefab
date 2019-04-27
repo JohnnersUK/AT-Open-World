@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6570072}
   - component: {fileID: 222956649422090108}
   - component: {fileID: 114339052680763022}
+  - component: {fileID: 114711959649701392}
   m_Layer: 0
   m_Name: Wall_2A
   m_TagString: Untagged
@@ -118,6 +119,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Wall_2A
+--- !u!114 &114711959649701392
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 122336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ee10e09038a0ba43a919572c0779d4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalName: Wall_2A
 --- !u!222 &222956649422090108
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -136,7 +149,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

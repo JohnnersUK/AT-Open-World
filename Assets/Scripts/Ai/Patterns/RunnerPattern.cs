@@ -43,4 +43,8 @@ public class RunnerPattern : AIPattern
         agent.SetDestination(me.transform.position - targetPos);
     }
 
+    public override void Caught()
+    {
+        GameManager.Instance.PlayerScore += 10;
+    }
 }

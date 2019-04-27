@@ -46,4 +46,8 @@ public class AIPattern
         return finalPosition;
     }
 
+    public virtual void Caught()
+    {
+
+    }
 }

@@ -96,4 +96,14 @@ public class AiController : MonoBehaviour
     {
         grounded = true;
     }
+
+    private void OnDestroy()
+    {
+        AIManager.Instance.RemoveAgent(gameObject);
+    }
+
+    public void Caught()
+    {
+        pattern.Caught();
+    }
 }
