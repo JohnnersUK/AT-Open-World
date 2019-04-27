@@ -22,8 +22,8 @@ public class AIManager : MonoBehaviour
 
         foreach (StreamingScript s in ss)
         {
-            s.LevelLoaded += OnLevelLoaded;
-            s.LevelUnloaded += OnLevelUnloaded;
+            s.SectorLoaded += OnSectorLoaded;
+            s.SectorUnloaded += OnSectorUnloaded;
         }
     }
 
@@ -39,12 +39,19 @@ public class AIManager : MonoBehaviour
             {
                 if (a != null)
                 {
-                    int posZ = Mathf.Clamp(Mathf.FloorToInt(a.transform.position.z / 100), 0, 2);
-                    int posX = Mathf.Clamp(Mathf.FloorToInt(a.transform.position.x / 100), 0, 2);
+                    int posZ = Mathf.Clamp(Mathf.FloorToInt(a.transform.position.z / 250), 0, 3);
+                    int posX = Mathf.Clamp(Mathf.FloorToInt(a.transform.position.x / 250), 0, 3);
 
                     string name = "Sector[" + posX + posZ + "]";
 
-                    a.transform.parent = GameObject.Find(name).transform;
+                    foreach(StreamingScript s in ss)
+                    {
+                        if(s.name == name)
+                        {
+                            a.transform.parent = s.transform;
+                            break;
+                        }
+                    }
                 }
                 else
                 {
@@ -55,20 +62,20 @@ public class AIManager : MonoBehaviour
         }
     }
 
-    private void OnLevelLoaded(object source, EventArgs args)
+    private void OnSectorLoaded(object source, EventArgs args)
     {
         StreamingScript str = source as StreamingScript;
 
         // Generate a random number of agents
-        int x = UnityEngine.Random.Range(0, 10);
+        int x = UnityEngine.Random.Range(0, 50);
         for (int i = 0; i < x; i++)
         {
             // Instanciate the bot
             
 
             // Randomize a location
-            float newX = UnityEngine.Random.Range(-50, 50) + str.transform.position.x;
-            float newZ = UnityEngine.Random.Range(-50, 50) + str.transform.position.z;
+            float newX = UnityEngine.Random.Range(-125, 125) + str.transform.position.x;
+            float newZ = UnityEngine.Random.Range(-125, 125) + str.transform.position.z;
             Vector3 targetPos = new Vector3(newX, 0, newZ);
 
             // Raycast up/down to find the ground level, move agent to this point
@@ -89,20 +96,23 @@ public class AIManager : MonoBehaviour
         }
     }
 
-    private void OnLevelUnloaded(object source, EventArgs args)
+    private void OnSectorUnloaded(object source, EventArgs args)
     {
-        // Clear the old list of agents and remove all empty items
-        agents.Clear();
-        agents.RemoveAll(item => item == null);
+        StreamingScript tempStreamingScript = source as StreamingScript;
+        GameObject tempSector = tempStreamingScript.gameObject;
+        GameObject tempChild;
 
-        // Get all of the remaining AI
-        GameObject[] tempA = GameObject.FindGameObjectsWithTag("AI");
+        int numOfChildren = tempSector.transform.childCount - 1;
 
-        // Add them to the list
-        foreach (GameObject a in tempA)
+        for(int i = numOfChildren; i > -1; i--)
         {
-            agents.Add(a);
+            tempChild = tempSector.transform.GetChild(i).gameObject;
+
+            if (agents.Contains(tempChild))
+            {
+                agents.Remove(tempChild);
+                Destroy(tempChild);
+            }
         }
-        
     }
 }

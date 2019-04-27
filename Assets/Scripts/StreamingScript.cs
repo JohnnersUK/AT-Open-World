@@ -18,10 +18,10 @@ public class StreamingScript : MonoBehaviour
 
     // Observer pattern
     public delegate void LevelLoadedEventHandler(object source, EventArgs args);
-    public event LevelLoadedEventHandler LevelLoaded;
+    public event LevelLoadedEventHandler SectorLoaded;
 
     public delegate void LevelUnloadedEventHandler(object source, EventArgs args);
-    public event LevelUnloadedEventHandler LevelUnloaded;
+    public event LevelUnloadedEventHandler SectorUnloaded;
 
     // Use this for initialization
     void Start()
@@ -69,7 +69,7 @@ public class StreamingScript : MonoBehaviour
         TerrainData tdata = (TerrainData)Resources.Load("t_" + this.name);
         GameObject tempT = Terrain.CreateTerrainGameObject(tdata);
         tempT.transform.parent = transform;
-        tempT.transform.localPosition = new Vector3(-50, -10, -50);
+        tempT.transform.localPosition = new Vector3(-125, -10, -125);
 
         // If an object file exists, Load it
         if (File.Exists(path))
@@ -91,19 +91,20 @@ public class StreamingScript : MonoBehaviour
         }
 
         Loaded = true;
-        OnLevelLoaded();
+        OnSectorLoaded();
     }
 
-    protected virtual void OnLevelLoaded()
+    protected virtual void OnSectorLoaded()
     {
-        if (LevelLoaded != null)
+        if (SectorLoaded != null)
         {
-            LevelLoaded(this, EventArgs.Empty);
+            SectorLoaded(this, EventArgs.Empty);
         }
     }
 
     void UnloadGameData()
-    { 
+    {
+        OnSectorUnloaded();
 
         foreach (Transform child in transform)
         {
@@ -111,14 +112,13 @@ public class StreamingScript : MonoBehaviour
         }
 
         Loaded = false;
-        OnLevelUnloaded();
     }
 
-    protected virtual void OnLevelUnloaded()
+    protected virtual void OnSectorUnloaded()
     {
-        if (LevelUnloaded != null)
+        if (SectorUnloaded != null)
         {
-            LevelUnloaded(this, EventArgs.Empty);
+            SectorUnloaded(this, EventArgs.Empty);
         }
     }
 
