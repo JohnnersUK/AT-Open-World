@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class ScoreScript : MonoBehaviour
 {
-
     Text t;
 	// Use this for initialization
 	void Start ()

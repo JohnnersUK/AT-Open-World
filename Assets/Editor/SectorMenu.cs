@@ -1,13 +1,9 @@
-﻿using UnityEngine;
+﻿using System.IO;
 using UnityEditor;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Collections.Generic;
+using UnityEngine;
 
 public class SectorMenu : EditorWindow
 {
-    public string sectorFile = "";
     StreamingScript currentSector;
     public ObjectList ObjectsList = new ObjectList();
 
@@ -30,7 +26,9 @@ public class SectorMenu : EditorWindow
         string title;
 
         if (Selection.activeGameObject != null)
+        {
             currentSector = Selection.activeGameObject.GetComponent(typeof(StreamingScript)) as StreamingScript;
+        }
 
         // Check if an object is selected
         if (Selection.activeGameObject == null)
@@ -81,10 +79,10 @@ public class SectorMenu : EditorWindow
         UnityEngine.Object tempResource;
         GameObject tempObject;
 
-        string path = Path.Combine(Application.streamingAssetsPath, sectorFile + ".json");
+        string path = Path.Combine(Application.streamingAssetsPath, (currentSector.name + ".json"));
 
         // Load the terrain
-        TerrainData tdata = (TerrainData)Resources.Load("t_" + this.name);
+        TerrainData tdata = (TerrainData)Resources.Load("t_" + currentSector.name);
         GameObject tempT = Terrain.CreateTerrainGameObject(tdata);
 
         tempT.transform.parent = currentSector.transform;
@@ -146,34 +144,33 @@ public class SectorMenu : EditorWindow
         string dataString;
         string path = Path.Combine(Application.streamingAssetsPath, (currentSector.name + ".json"));
 
-        if (File.Exists(path))
+
+        foreach (Transform child in currentSector.transform)
         {
-            foreach (Transform child in currentSector.transform)
+            EditorUtility.DisplayProgressBar("Save Sector", "Process " + i, (float)i / currentSector.transform.childCount);
+            if (child.GetComponent<ResourceName>())
             {
-                EditorUtility.DisplayProgressBar("Save Sector", "Process " + i, (float)i / currentSector.transform.childCount);
-                if (child.GetComponent<ResourceName>())
-                {
-                    tempObject = new Object();
-                    tempObject.Type = "Object";
-                    tempObject.PrefabName = child.GetComponent<ResourceName>().globalName;
-                    tempObject.Position = child.position;
-                    tempObject.Rotation = child.rotation.eulerAngles;
-                    tempObject.Scale = child.localScale;
+                tempObject = new Object();
+                tempObject.Type = "Object";
+                tempObject.PrefabName = child.GetComponent<ResourceName>().globalName;
+                tempObject.Position = child.position;
+                tempObject.Rotation = child.rotation.eulerAngles;
+                tempObject.Scale = child.localScale;
 
-                    rawData.List.Add(tempObject);                    
-                }
-
-                i++;
+                rawData.List.Add(tempObject);
             }
 
-            EditorUtility.ClearProgressBar();
-
-            dataString = JsonUtility.ToJson(rawData);
-
-            File.WriteAllText(path, dataString);
-
-            Debug.Log("Sector saved to " + currentSector.name + ".json");
+            i++;
         }
+
+        EditorUtility.ClearProgressBar();
+
+        dataString = JsonUtility.ToJson(rawData);
+
+        File.WriteAllText(path, dataString);
+
+        Debug.Log("Sector saved to " + currentSector.name + ".json");
+
 
         return;
     }

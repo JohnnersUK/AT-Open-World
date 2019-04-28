@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3364250}
   - component: {fileID: 2391772}
   - component: {fileID: 6532976}
+  - component: {fileID: 114139215687763640}
   m_Layer: 0
   m_Name: Barrel_1
   m_TagString: Untagged
@@ -96,3 +97,15 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 119928}
   m_IsPrefabAsset: 1
+--- !u!114 &114139215687763640
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 119928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ee10e09038a0ba43a919572c0779d4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalName: Barrel_1

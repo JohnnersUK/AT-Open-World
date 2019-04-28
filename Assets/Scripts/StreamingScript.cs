@@ -1,20 +1,22 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 
 using UnityEngine;
-using UnityEngine.AI;
 
 public class StreamingScript : MonoBehaviour
 {
-    public ObjectList ObjectsList = new ObjectList();
-    public Transform Player;
     public float UnloadDistance;
+    public float MaxDetailDistance;
+    public float QualityDropOff;
 
     private string JsonDataPath;
     private bool Loaded;
+
+    public ObjectList ObjectsList = new ObjectList();
+    public Transform Player;
+
     private Vector3 LastPos;
+    private Terrain sectorTerrain;
 
     // Observer pattern
     public delegate void LevelLoadedEventHandler(object source, EventArgs args);
@@ -27,8 +29,8 @@ public class StreamingScript : MonoBehaviour
     void Start()
     {
         Loaded = false;
-        JsonDataPath = this.name + ".json";
-        LastPos = new Vector3(-1,-1,-1);
+        JsonDataPath = name + ".json";
+        LastPos = new Vector3(-1, -1, -1);
 
         // Clear any unsaved data
         UnloadGameData();
@@ -37,28 +39,69 @@ public class StreamingScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector3 ThisTwoD;
+        Vector3 PlayerTwoD;
+
+        float distance = UnloadDistance + 1;
+
         // If the player has moved
         if (Player.position != LastPos)
         {
-            Vector3 PlayerTwoD = new Vector3(Player.position.x, 0, Player.position.z);
-            Vector3 ThisTwoD = new Vector3(transform.position.x, 0, transform.position.z);
+            PlayerTwoD = new Vector3(Player.position.x, 0, Player.position.z);
+            ThisTwoD = new Vector3(transform.position.x, 0, transform.position.z);
+
+            distance = Vector3.Distance(PlayerTwoD, ThisTwoD);
 
             if (Loaded)
             {
-                if (Vector3.Distance(PlayerTwoD, ThisTwoD) > UnloadDistance)
+                if (distance > UnloadDistance)
                 {
                     UnloadGameData();
                 }
             }
             else
             {
-                if (Vector3.Distance(PlayerTwoD, ThisTwoD) <= UnloadDistance)
+                if (distance <= UnloadDistance)
                 {
                     LoadGameData();
                 }
             }
+
+            UpdateTerrain(distance);
+
         }
         LastPos = Player.position;
+    }
+
+    void UpdateTerrain(float distance)
+    {
+        float pixelError = 0f;
+        if (sectorTerrain == null)
+        {
+            return;
+        }
+
+        // Calculate the pixel error (Render detail) of the terrain
+        pixelError = (float)Math.Tanh((distance / UnloadDistance) / QualityDropOff) * 40;
+        sectorTerrain.heightmapPixelError = pixelError;
+
+        // Toggle details
+        if (distance > MaxDetailDistance)
+        {
+            // Base terrain settings
+            sectorTerrain.castShadows = false;
+
+            // Trees and Foliage
+            sectorTerrain.drawTreesAndFoliage = false;
+        }
+        else
+        {
+            // Base terrain settings
+            sectorTerrain.castShadows = true;
+
+            // Trees and Foliage
+            sectorTerrain.drawTreesAndFoliage = true;
+        }
     }
 
     // Loads data from a JSON file
@@ -70,8 +113,10 @@ public class StreamingScript : MonoBehaviour
         string path = Path.Combine(Application.streamingAssetsPath, JsonDataPath);
 
         // Load the terrain
-        TerrainData tdata = (TerrainData)Resources.Load("t_" + this.name);
+        TerrainData tdata = (TerrainData)Resources.Load("t_" + name);
         GameObject tempT = Terrain.CreateTerrainGameObject(tdata);
+
+        sectorTerrain = tempT.GetComponent<Terrain>();
 
         tempT.transform.parent = transform;
         tempT.transform.localPosition = new Vector3(-125, -10, -125);
@@ -81,12 +126,12 @@ public class StreamingScript : MonoBehaviour
         {
             string data = File.ReadAllText(path);
             ObjectsList = JsonUtility.FromJson<ObjectList>(data);
-            foreach(Object o in ObjectsList.List)
-            { 
+            foreach (Object o in ObjectsList.List)
+            {
                 if (o.Type == "Object")
                 {
                     tempResource = Resources.Load(o.PrefabName);
-                    if(tempResource == null)
+                    if (tempResource == null)
                     {
                         Debug.LogError("Resource not found: " + o.PrefabName);
                     }
@@ -138,6 +183,6 @@ public class StreamingScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.name);
-        other.transform.parent = this.transform;
+        other.transform.parent = transform;
     }
 }
